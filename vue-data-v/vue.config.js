@@ -1,6 +1,12 @@
 const path = require('path');
 const resolve = (dir) => path.join(__dirname, dir);
 
+const AutoImport = require('unplugin-auto-import/webpack')
+const Components = require('unplugin-vue-components/webpack')
+const {
+	ElementPlusResolver
+} = require('unplugin-vue-components/resolvers')
+
 module.exports = {
 	chainWebpack: config => {
 		config.resolve.symlinks(true); // 修复热更新失效
@@ -17,4 +23,14 @@ module.exports = {
 			.set('@views', resolve('src/views'))
 			.set('@store', resolve('src/store'));
 	},
+	configureWebpack: {
+		plugins: [
+			AutoImport({
+				resolvers: [ElementPlusResolver()],
+			}),
+			Components({
+				resolvers: [ElementPlusResolver()],
+			}),
+		],
+	}
 }
